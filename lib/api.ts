@@ -20,7 +20,7 @@ export async function api<T = unknown>(
   const res = await fetch(`${API_URL}${path}`, {
     ...init,
     headers,
-    body: body ? JSON.stringify(body) : init.body,
+    ...(body !== undefined && { body: JSON.stringify(body) }),
   });
 
   const data = await res.json().catch(() => ({}));
