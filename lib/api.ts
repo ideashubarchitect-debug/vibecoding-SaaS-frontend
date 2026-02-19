@@ -1,5 +1,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
+type ApiOptions = Omit<RequestInit, 'body'> & { body?: object };
+
 function getToken(): string | null {
   if (typeof window === 'undefined') return null;
   return localStorage.getItem('vibeable_token');
@@ -7,7 +9,7 @@ function getToken(): string | null {
 
 export async function api<T = unknown>(
   path: string,
-  options: RequestInit & { body?: object } = {}
+  options: ApiOptions = {}
 ): Promise<T> {
   const { body, ...init } = options;
   const headers: HeadersInit = {
