@@ -2,16 +2,16 @@ import Link from 'next/link';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[var(--background)]">
       <header className="border-b border-[var(--border)] px-6 py-4 flex items-center justify-between">
         <span className="text-xl font-semibold">vibeable.dev</span>
         <nav className="flex items-center gap-4">
-          <Link href="/login" className="text-sm text-[var(--muted-foreground)] hover:text-foreground">
+          <Link href="/login" className="text-sm text-[var(--muted-foreground)] hover:text-foreground transition">
             Log in
           </Link>
           <Link
             href="/register"
-            className="rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+            className="rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition"
           >
             Get started
           </Link>
@@ -27,7 +27,7 @@ export default function HomePage() {
         <div className="mt-10 flex flex-col sm:flex-row gap-4">
           <Link
             href="/register"
-            className="rounded-xl bg-[var(--primary)] px-8 py-4 text-lg font-medium text-white hover:opacity-90 transition"
+            className="rounded-xl bg-[var(--primary)] px-8 py-4 text-lg font-medium text-white hover:opacity-90 transition shadow-lg shadow-[var(--primary)]/25"
           >
             Start building free
           </Link>
@@ -38,9 +38,17 @@ export default function HomePage() {
             Sign in
           </Link>
         </div>
-        <p className="mt-8 text-sm text-[var(--muted-foreground)]">
-          Free tier: 100 AI credits/month. No credit card required.
-        </p>
+        <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm text-[var(--muted-foreground)]">
+          <span className="flex items-center gap-2">
+            <span className="text-[var(--primary)]">✓</span> Free tier: 100 AI credits/month
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="text-[var(--primary)]">✓</span> No credit card required
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="text-[var(--primary)]">✓</span> Publish instantly
+          </span>
+        </div>
       </main>
     </div>
   );

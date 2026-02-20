@@ -35,6 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: '/admin/plans', label: 'Plans' },
     { href: '/admin/payments', label: 'Payments' },
     { href: '/admin/usage', label: 'AI Usage' },
+    { href: '/admin/activity', label: 'Activity' },
     { href: '/admin/settings', label: 'Settings' },
   ];
 
@@ -48,7 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               key={href}
               href={href}
               className={`block rounded-lg px-3 py-2 text-sm ${
-                pathname === href ? 'bg-[var(--muted)]' : 'text-[var(--muted-foreground)] hover:text-foreground'
+                pathname === href || (href !== '/admin' && pathname.startsWith(href)) ? 'bg-[var(--muted)]' : 'text-[var(--muted-foreground)] hover:text-foreground'
               }`}
             >
               {label}

@@ -62,6 +62,39 @@ export const plans = {
 export const user = {
   credits: () => api<{ credits: number }>('/api/user/credits'),
   usage: () => api<{ usage: { date: string; tokens_used: number }[] }>('/api/user/usage'),
+  show: () => api<{ user: User }>('/api/user'),
+  update: (data: { name?: string; locale?: string }) =>
+    api<{ user: User }>('/api/user', { method: 'PATCH', body: data }),
+};
+
+export const subscriptions = {
+  list: () => api<{ subscription: Subscription | null }>('/api/subscriptions'),
+  create: (planId: number) =>
+    api<{ message: string; subscription: unknown }>('/api/subscriptions', { method: 'POST', body: { plan_id: planId } }),
+  invoices: () => api<{ invoices: Invoice[] }>('/api/subscriptions/invoices'),
+};
+
+export const admin = {
+  users: (page = 1, perPage = 20) =>
+    api<{ users: AdminUser[]; total: number; page: number }>(`/api/admin/users?page=${page}&per_page=${perPage}`),
+  plans: () => api<{ plans: Plan[] }>('/api/admin/plans'),
+  updatePlan: (id: number, data: Partial<Plan>) =>
+    api<{ plan: Plan }>(`/api/admin/plans/${id}`, { method: 'PATCH', body: data }),
+  payments: () => api<{ payments: AdminPayment[] }>('/api/admin/payments'),
+  usage: () => api<{ usage: AdminUsage[] }>('/api/admin/usage'),
+  activity: () => api<{ logs: ActivityLog[] }>('/api/admin/activity'),
+  credits: () => api<{ users: { id: number; email: string; credits: number }[] }>('/api/admin/credits'),
+  adjustCredits: (userId: number, delta: number) =>
+    api<{ user: { id: number; email: string; credits: number } }>('/api/admin/credits/adjust', {
+      method: 'POST',
+      body: { user_id: userId, delta },
+    }),
+  settings: () => api<{ settings: Record<string, string> }>('/api/admin/settings'),
+  updateSettings: (data: Record<string, string>) =>
+    api<{ message: string }>('/api/admin/settings', { method: 'PATCH', body: data }),
+  aiConfig: () => api<{ config: Record<string, string> }>('/api/admin/ai-config'),
+  updateAiConfig: (data: Record<string, string>) =>
+    api<{ message: string }>('/api/admin/ai-config', { method: 'PATCH', body: data }),
 };
 
 export interface User {
@@ -89,4 +122,59 @@ export interface Plan {
   price_yearly: number;
   credits_per_month: number;
   features?: string[] | string;
+  active?: number;
+  sort_order?: number;
+}
+
+export interface Subscription {
+  id: number;
+  plan_id: number;
+  status: string;
+  current_period_end: string;
+  plan_name?: string;
+  credits_per_month?: number;
+}
+
+export interface Invoice {
+  id: number;
+  amount: number;
+  currency: string;
+  status: string;
+  created_at: string;
+}
+
+export interface AdminUser {
+  id: number;
+  email: string;
+  name?: string;
+  role: string;
+  credits: number;
+  created_at: string;
+}
+
+export interface AdminPayment {
+  id: number;
+  user_id: number;
+  email?: string;
+  amount: number;
+  currency: string;
+  method: string;
+  status: string;
+  created_at: string;
+}
+
+export interface AdminUsage {
+  date: string;
+  tokens: number;
+  users: number;
+}
+
+export interface ActivityLog {
+  id: number;
+  user_id?: number;
+  action: string;
+  entity_type?: string;
+  entity_id?: number;
+  meta?: string;
+  created_at: string;
 }

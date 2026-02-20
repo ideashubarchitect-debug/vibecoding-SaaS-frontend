@@ -60,18 +60,19 @@ export default function DashboardLayout({
           >
             Billing
           </Link>
-          <span className="text-sm text-[var(--muted-foreground)]">{user.email}</span>
-          <button
-            type="button"
-            onClick={() => {
-              const { logout } = require('@/components/providers/AuthProvider').useAuth();
-              (window as unknown as { __logout?: () => void }).__logout = () => {};
-            }}
+          <Link
+            href="/dashboard/settings"
+            className={`text-sm ${pathname?.startsWith('/dashboard/settings') ? 'text-foreground font-medium' : 'text-[var(--muted-foreground)] hover:text-foreground'}`}
           >
-            <Link href="/login" className="text-sm text-[var(--muted-foreground)] hover:text-foreground">
-              Log out
+            Settings
+          </Link>
+          {user.role === 'admin' && (
+            <Link href="/admin" className="text-sm text-amber-400 hover:text-amber-300">
+              Admin
             </Link>
-          </button>
+          )}
+          <span className="text-sm text-[var(--muted-foreground)]">{user.email}</span>
+          <LogoutLink />
         </nav>
       </header>
       <main className="flex-1">{children}</main>
